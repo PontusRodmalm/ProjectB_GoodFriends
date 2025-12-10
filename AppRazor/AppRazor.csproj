@@ -2,22 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <Nullable>disable</Nullable>
+    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>e2bc5334-b86a-488d-96ea-6330cc3b5a0f</UserSecretsId>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
-
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.10" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.10" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ItemGroup>
     <ProjectReference Include="..\Configuration\Configuration.csproj">
       <GlobalPropertiesToRemove />
     </ProjectReference>

@@ -1,0 +1,27 @@
+﻿@page
+@model AppRazor.Pages.SelectDataSourceModel
+@using Configuration;
+@{
+    ViewData["Title"] = "Home";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@attribute [IgnoreAntiforgeryToken]
+<!-- Page list-of-quotes -->
+<div class="container px-4 py-4" id="list-of-quotes">
+    <h2 class="pb-2 border-bottom">Select source data</h2>
+
+    <p>You can select to read the data directly from a database or from a WebApi. At the page footer you see the currently active datasource</p>
+    <form class="needs-validation" method="post" novalidate>
+        <div class="row mb-2 text-center">
+            <div class="col-md-10 themed-grid-col">
+                <label for="datasource" class="form-label">Select datasource</label>
+                <select asp-for="SelectedDataSource" asp-items="Html.GetEnumSelectList<Services.MusicDataSource>()" class="form-control" id="datasource">
+                </select>
+            </div>
+            <div class="col-md-2 themed-grid-col">
+                <button class="btn btn-success btn-sm" type="submit">Change</button>
+            </div>
+        </div>
+    </form>
+</div>
+
