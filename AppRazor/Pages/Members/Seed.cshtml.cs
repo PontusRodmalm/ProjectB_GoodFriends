@@ -9,15 +9,10 @@ namespace AppRazor.Pages
     public class SeedModel : PageModel
     {
         //Just like for WebApi
-        readonly IAdminService _admin_service = null;
-        readonly ILogger<SeedModel> _logger = null;
+        readonly IAdminService _admin_service;
+        readonly ILogger<SeedModel> _logger;
 
-        public int NrOfFriends => nrOfFriends().Result;
-        private async Task<int> nrOfFriends()
-        {
-            var info = await _admin_service.GuestInfoAsync();
-            return info.Item.Db.NrSeededFriends + info.Item.Db.NrUnseededFriends;
-        }
+        public int NrOfFriends { get; set; }
 
         [BindProperty]
         [Required(ErrorMessage = "You must enter nr of items to seed")]
@@ -26,8 +21,10 @@ namespace AppRazor.Pages
         [BindProperty]
         public bool RemoveSeeds { get; set; } = true;
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGet()
         {
+            var info = await _admin_service.GuestInfoAsync();
+            NrOfFriends = info.Item.Db.NrSeededFriends + info.Item.Db.NrUnseededFriends;
             return Page();
         }
         public async Task<IActionResult> OnPost()
@@ -41,7 +38,7 @@ namespace AppRazor.Pages
                 }
                 await _admin_service.SeedAsync(NrOfItemsToSeed);
 
-                return Redirect($"~/ListOfFriends");
+                return Redirect($"~/Friends/Overview");
             }
             return Page();
         }
