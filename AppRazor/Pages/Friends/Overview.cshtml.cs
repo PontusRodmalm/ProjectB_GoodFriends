@@ -16,7 +16,11 @@ namespace AppRazor.Pages
         [BindProperty]
         public bool UseSeeds { get; set; } = true;
 
-        public List<IFriend> Friends { get; set; }
+        public List<IFriend> Friends { get; set; } = new();
+        public List<string> Countries { get; set; } = new();
+
+        [BindProperty(SupportsGet = true)]
+        public string? CountryFilter { get; set; }
 
         public int NrOfFriends { get; set; }
 
@@ -43,14 +47,40 @@ namespace AppRazor.Pages
             }
 
             SearchFilter = Request.Query["search"];
+            CountryFilter = Request.Query["CountryFilter"];
 
-            //Use the Service
-            var resp = await _service.ReadFriendsAsync(UseSeeds, false, SearchFilter, ThisPageNr, PageSize);
-            Friends = resp.PageItems;
-            NrOfFriends = resp.DbItemsCount;
+            //Use the Service 
+            var resp = await _service.ReadFriendsAsync(UseSeeds, false, SearchFilter, 0, 10000);
+            var allFriends = resp.PageItems;
 
-            //Pagination
-            UpdatePagination(resp.DbItemsCount);
+            // Populate the country list from all friends
+            Countries = allFriends
+                .Where(f => !string.IsNullOrEmpty(f.Address?.Country))
+                .Select(f => f.Address.Country)
+                .Distinct()
+                .OrderBy(c => c)
+                .ToList();
+
+            // Filter by country if selected
+            List<IFriend> filteredFriends;
+            if (!string.IsNullOrEmpty(CountryFilter))
+            {
+                filteredFriends = allFriends.Where(f => f.Address?.Country == CountryFilter).ToList();
+            }
+            else
+            {
+                filteredFriends = allFriends;
+            }
+
+            NrOfFriends = filteredFriends.Count;
+
+            //Pagination 
+            Friends = filteredFriends
+                .Skip(ThisPageNr * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            UpdatePagination(NrOfFriends);
 
             return Page();
         }

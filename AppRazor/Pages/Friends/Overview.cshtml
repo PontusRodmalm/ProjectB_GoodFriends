@@ -19,14 +19,32 @@
             <div class="col-md-7 col-lg-10">
                 <div class="row mb-2 text-center">
                     <!-- Search filter-->
-                    <div class="row mb-2 text-center">
-                        <div class="col-md-6 ">
+                    <div class="row mb-2 text-center align-items-center">
+                        <div class="col-md-4">
                             <input asp-for="SearchFilter" class="form-control" type="search" placeholder="Search"
                                 aria-label="Search">
                         </div>
-                        <div class="col-md-2 ">
+                        <div class="col-md-2">
                             <button asp-page-handler="Search" class="btn btn-outline-success"
                                 type="submit">Search</button>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle w-100" type="button"
+                                    id="countryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    @(string.IsNullOrEmpty(Model.CountryFilter) ? "Filter by Country" :
+                                                                        Model.CountryFilter)
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="countryDropdown">
+                                    <li><a class="dropdown-item" href="~/Friends/Overview?CountryFilter=">All
+                                            Countries</a></li>
+                                    @foreach (var country in Model.Countries)
+                                    {
+                                        <li><a class="dropdown-item"
+                                                href="~/Friends/Overview?CountryFilter=@country">@country</a></li>
+                                    }
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -34,8 +52,10 @@
                     <!-- This is where selected item id will be stored -->
                     <input type="hidden" name="friendId" data-seido-selected-item-id-target />
 
-                    <div class="col-md-10 themed-grid-head-col">Friend Name</div>
-                    <div class="col-md-2 themed-grid-head-col">
+                    <div class="col-md-4 themed-grid-head-col">Friend Name</div>
+                    <div class="col-md-2 themed-grid-head-col">City</div>
+                    <div class="col-md-3 themed-grid-head-col">Pets</div>
+                    <div class="col-md-3 themed-grid-head-col">
                         <a href="~/Members/EditFriend" class="btn btn-success btn-sm m-1" type="button">New</a>
                     </div>
                 </div>
@@ -45,12 +65,25 @@
                     {
                         @foreach (var item in Model.Friends)
                         {
-                            <div class="col-md-10 themed-grid-col">
+                            <div class="col-md-4 themed-grid-col">
                                 <a href="~/ViewFriend?id=@item.FriendId">
                                     @item.FirstName @item.LastName
                                 </a>
                             </div>
                             <div class="col-md-2 themed-grid-col">
+                                @(item.Address?.City ?? "N/A")
+                            </div>
+                            <div class="col-md-3 themed-grid-col">
+                                @if (item.Pets != null && item.Pets.Any())
+                                {
+                                    <span>@string.Join(", ", item.Pets.Select(p => p.Kind))</span>
+                                }
+                                else
+                                {
+                                    <span>No pets</span>
+                                }
+                            </div>
+                            <div class="col-md-3 themed-grid-col">
                                 <a href="~/Members/EditFriend?id=@item.FriendId" class="btn btn-secondary btn-sm m-1"
                                     type="button">Edit</a>
 
@@ -67,7 +100,7 @@
                             <ul class="pagination">
                                 <li class="page-item">
                                     <a class="page-link"
-                                        href="~/Friends/Overview?pagenr=@Model.PrevPageNr&search=@Model.SearchFilter"
+                                        href="~/Friends/Overview?pagenr=@Model.PrevPageNr&search=@Model.SearchFilter&CountryFilter=@Model.CountryFilter"
                                         aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
@@ -75,13 +108,14 @@
                                 @for (int i = 0; i < Model.NrVisiblePages; i++)
                                 {
                                     <li class="page-item">
-                                        <a class="page-link" href="~/Friends/Overview?pagenr=@i&search=@Model.SearchFilter">@(i
+                                        <a class="page-link"
+                                            href="~/Friends/Overview?pagenr=@i&search=@Model.SearchFilter&CountryFilter=@Model.CountryFilter">@(i
                                                                                 + 1)</a>
                                 </li>
                             }
                             <li class="page-item">
                                 <a class="page-link"
-                                    href="~/Friends/Overview?pagenr=@Model.NextPageNr&search=@Model.SearchFilter"
+                                    href="~/Friends/Overview?pagenr=@Model.NextPageNr&search=@Model.SearchFilter&CountryFilter=@Model.CountryFilter"
                                     aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
