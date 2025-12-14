@@ -76,7 +76,8 @@
                             <div class="col-md-3 themed-grid-col">
                                 @if (item.Pets != null && item.Pets.Any())
                                 {
-                                    <span>@string.Join(", ", item.Pets.Select(p => p.Kind))</span>
+                                    var petGroups = item.Pets.GroupBy(p => p.Kind).Select(g => $"{g.Count()} {g.Key}");
+                                    <span>@string.Join(", ", petGroups)</span>
                                 }
                                 else
                                 {
