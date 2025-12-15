@@ -49,8 +49,8 @@ namespace AppRazor.Pages
             SearchFilter = Request.Query["search"];
             CountryFilter = Request.Query["CountryFilter"];
 
-            //Use the Service 
-            var resp = await _service.ReadFriendsAsync(UseSeeds, false, SearchFilter, 0, 10000);
+            //Use the Service - get ALL friends (don't filter by name in service)
+            var resp = await _service.ReadFriendsAsync(UseSeeds, false, null, 0, 10000);
             var allFriends = resp.PageItems;
 
             // Populate the country list from all friends
@@ -62,14 +62,18 @@ namespace AppRazor.Pages
                 .ToList();
 
             // Filter by country if selected
-            List<IFriend> filteredFriends;
+            List<IFriend> filteredFriends = allFriends;
+
             if (!string.IsNullOrEmpty(CountryFilter))
             {
-                filteredFriends = allFriends.Where(f => f.Address?.Country == CountryFilter).ToList();
+                filteredFriends = filteredFriends.Where(f => f.Address?.Country == CountryFilter).ToList();
             }
-            else
+
+            // Also filter by city if search filter matches city name
+            if (!string.IsNullOrEmpty(SearchFilter))
             {
-                filteredFriends = allFriends;
+                filteredFriends = filteredFriends.Where(f =>
+                    f.Address?.City?.Contains(SearchFilter, StringComparison.OrdinalIgnoreCase) == true).ToList();
             }
 
             NrOfFriends = filteredFriends.Count;
@@ -96,13 +100,42 @@ namespace AppRazor.Pages
 
         public async Task<IActionResult> OnPostSearch()
         {
-            //Use the Service
-            var resp = await _service.ReadFriendsAsync(UseSeeds, false, SearchFilter, ThisPageNr, PageSize);
-            Friends = resp.PageItems;
-            NrOfFriends = resp.DbItemsCount;
+            //Use the Service - get all friends
+            var resp = await _service.ReadFriendsAsync(UseSeeds, false, null, 0, 10000);
+            var allFriends = resp.PageItems;
+
+            // Populate the country list
+            Countries = allFriends
+                .Where(f => !string.IsNullOrEmpty(f.Address?.Country))
+                .Select(f => f.Address.Country)
+                .Distinct()
+                .OrderBy(c => c)
+                .ToList();
+
+            // Filter by country if selected
+            List<IFriend> filteredFriends = allFriends;
+
+            if (!string.IsNullOrEmpty(CountryFilter))
+            {
+                filteredFriends = filteredFriends.Where(f => f.Address?.Country == CountryFilter).ToList();
+            }
+
+            // Filter by city if search filter is provided
+            if (!string.IsNullOrEmpty(SearchFilter))
+            {
+                filteredFriends = filteredFriends.Where(f =>
+                    f.Address?.City?.Contains(SearchFilter, StringComparison.OrdinalIgnoreCase) == true).ToList();
+            }
+
+            NrOfFriends = filteredFriends.Count;
 
             //Pagination
-            UpdatePagination(resp.DbItemsCount);
+            Friends = filteredFriends
+                .Skip(ThisPageNr * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            UpdatePagination(NrOfFriends);
 
             //Page is rendered as the postback is part of the form tag
             return Page();

@@ -66,25 +66,35 @@
                         @foreach (var item in Model.Friends)
                         {
                             <div class="col-md-4 themed-grid-col">
-                                <a href="~/ViewFriend?id=@item.FriendId">
+                                <a href="~/Friends/ViewFriend?id=@item.FriendId">
                                     @item.FirstName @item.LastName
                                 </a>
                             </div>
                             <div class="col-md-2 themed-grid-col">
-                                @(item.Address?.City ?? "N/A")
+                                @if (!string.IsNullOrEmpty(item.Address?.City))
+                                {
+                                    <a href="~/Friends/Overview?search=@item.Address.City&CountryFilter=@Model.CountryFilter">
+                                        @item.Address.City
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span>N/A</span>
+                                }
                             </div>
                             <div class="col-md-3 themed-grid-col">
                                 @if (item.Pets != null && item.Pets.Any())
                                 {
-                                    var petGroups = item.Pets.GroupBy(p => p.Kind).Select(g => $"{g.Count()} {g.Key}");
-                                    <span>@string.Join(", ", petGroups)</span>
+                                    <span>@item.Pets.Count</span>
                                 }
                                 else
                                 {
-                                    <span>No pets</span>
+                                    <span>0</span>
                                 }
                             </div>
                             <div class="col-md-3 themed-grid-col">
+                                <a href="~/Friends/ViewFriend?id=@item.FriendId" class="btn btn-primary btn-sm m-1"
+                                    type="button">View</a>
                                 <a href="~/Members/EditFriend?id=@item.FriendId" class="btn btn-secondary btn-sm m-1"
                                     type="button">Edit</a>
 

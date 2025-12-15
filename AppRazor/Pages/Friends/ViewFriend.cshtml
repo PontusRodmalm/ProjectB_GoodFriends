@@ -1,0 +1,88 @@
+@page
+@using Models.DTO
+@model AppRazor.Pages.Friends.ViewFriendModel
+@{
+    ViewData["Title"] = "View friend";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@attribute [IgnoreAntiforgeryToken]
+
+<!-- Page view-friend -->
+<div class="container px-4 py-4" id="view-friend">
+    <h2 class="pb-2 border-bottom">
+        Details
+        <a href="~/Members/EditFriend?id=@Model.Friend.FriendId">
+            <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+                <use xlink:href="#edit" />
+            </svg>
+        </a>
+    </h2>
+    <form class="needs-validation" novalidate>
+        <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-5">
+            <div class="col-md-7 col-lg-10">
+
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <label for="fullname" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name"
+                            value="@Model.Friend.FirstName @Model.Friend.LastName" readonly>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="address" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="address"
+                            value="@($"{Model.Friend.Address?.StreetAddress ?? ""} {(Model.Friend.Address != null ? Model.Friend.Address.ZipCode.ToString() : "")} {Model.Friend.Address?.City ?? ""}")"
+                            readonly>
+                    </div>
+
+                    <div class="col-sm-6">
+                    </div>
+                </div>
+                <div class="row g-1">
+                    <h3 class="pb-2">Quotes</h3>
+
+                    <div class="row mb-2 text-center">
+                        <div class="col-md-12 themed-grid-head-col">Quotes</div>
+                    </div>
+                    @foreach (var item in Model.Friend.Quotes)
+                    {
+                        <div class="row mb-2 text-center">
+                            <div class="col-md-12 themed-grid-col">
+                                @item.QuoteText
+                                <div class="text-end">
+                                    — @item.Author
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="row g-1">
+                    <h3 class="pb-2">Pets</h3>
+                    <div class="row mb-2 text-center">
+                        <div class="col-md-10 themed-grid-head-col">Type of animals</div>
+                    </div>
+                    @if (Model.Friend.Pets.Any())
+                    {
+                        foreach (var group in Model.Friend.Pets.GroupBy(p => p.Kind))
+                        {
+                            <div class="row mb-2 text-center">
+                                <div class="col-md-10 themed-grid-col">
+                                    @group.Count() @group.Key
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="row mb-2 text-center">
+                            <div class="col-md-10 themed-grid-col">
+                                No pets found.
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
