@@ -1,0 +1,111 @@
+﻿@page
+@model AppRazor.Pages.EditFriendModel
+@{
+    ViewData["Title"] = "Edit friend";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@attribute [IgnoreAntiforgeryToken]
+
+<!-- Page edit-friend -->
+<div class="container px-4 py-4" id="edit-friend">
+    <form class="needs-validation" method="post" novalidate>
+        <h2 class="pb-2 border-bottom">
+            @Model.PageHeader
+            <button class="btn btn-primary-outline" type="submit" asp-page-handler="Save">
+                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+                    <use xlink:href="#save" />
+                </svg>
+            </button>
+            <button class="btn btn-primary-outline" type="submit" asp-page-handler="Undo">
+                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
+                    <use xlink:href="#undo" />
+                </svg>
+            </button>
+        </h2>
+
+        <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-5">
+            <div class="col-md-7 col-lg-10">
+
+                <!--To keep between Posts -->
+                <input asp-for="PageHeader" value="@Model.PageHeader" type="hidden" />
+
+                <!-- Server side validation errors -->
+                @if (Model.ValidationResult.HasErrors)
+                {
+                    <div class="row g-3">
+                        @foreach (var item in Model.ValidationResult.ErrorMsgs)
+                        {
+                            <span class="alert alert-danger" role="alert">
+                                @item
+                            </span>
+                        }
+                    </div>
+                }
+
+                <div class="row g-3">
+                    <!-- Hidden fields used to bind input model -->
+                    <input asp-for="FriendInput.FriendId" type="hidden" />
+                    <input asp-for="FriendInput.StatusIM" type="hidden" />
+
+                    <div class="col-sm-6">
+                        <label asp-for="FriendInput.FirstName" class="form-label"></label>
+                        <input asp-for="FriendInput.FirstName" class="form-control" />
+                        <span asp-validation-for="FriendInput.FirstName" class="invalid-feedback"></span>
+                    </div>
+                    <div class="col-sm-6">
+                        <label asp-for="FriendInput.LastName" class="form-label"></label>
+                        <input asp-for="FriendInput.LastName" class="form-control" />
+                        <span asp-validation-for="FriendInput.LastName" class="invalid-feedback"></span>
+                    </div>
+                    <div class="col-sm-12">
+                        <label asp-for="FriendInput.Email" class="form-label"></label>
+                        <input asp-for="FriendInput.Email" class="form-control" />
+                        <span asp-validation-for="FriendInput.Email" class="invalid-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="accordion mt-4" id="addressAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingAddress">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseAddress" aria-expanded="false" aria-controls="collapseAddress">
+                                Address
+                            </button>
+                        </h2>
+                        <div id="collapseAddress" class="accordion-collapse collapse" aria-labelledby="headingAddress"
+                            data-bs-parent="#addressAccordion">
+                            <div class="accordion-body">
+                                <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <label asp-for="FriendInput.Address.StreetAddress" class="form-label"></label>
+                                        <input asp-for="FriendInput.Address.StreetAddress" class="form-control" />
+                                        <span asp-validation-for="FriendInput.Address.StreetAddress"
+                                            class="invalid-feedback"></span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label asp-for="FriendInput.Address.ZipCode" class="form-label"></label>
+                                        <input asp-for="FriendInput.Address.ZipCode" class="form-control" />
+                                        <span asp-validation-for="FriendInput.Address.ZipCode"
+                                            class="invalid-feedback"></span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label asp-for="FriendInput.Address.City" class="form-label"></label>
+                                        <input asp-for="FriendInput.Address.City" class="form-control" />
+                                        <span asp-validation-for="FriendInput.Address.City"
+                                            class="invalid-feedback"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+@section script
+{
+    <partial name="_ValidationScriptsPartial" />
+}
