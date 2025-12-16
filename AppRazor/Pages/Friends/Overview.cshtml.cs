@@ -49,11 +49,11 @@ namespace AppRazor.Pages
             SearchFilter = Request.Query["search"];
             CountryFilter = Request.Query["CountryFilter"];
 
-            //Use the Service - get ALL friends (don't filter by name in service)
+            //Use the Service 
             var resp = await _service.ReadFriendsAsync(UseSeeds, false, null, 0, 10000);
             var allFriends = resp.PageItems;
 
-            // Populate the country list from all friends
+
             Countries = allFriends
                 .Where(f => !string.IsNullOrEmpty(f.Address?.Country))
                 .Select(f => f.Address.Country)
@@ -69,7 +69,7 @@ namespace AppRazor.Pages
                 filteredFriends = filteredFriends.Where(f => f.Address?.Country == CountryFilter).ToList();
             }
 
-            // Also filter by city if search filter matches city name
+
             if (!string.IsNullOrEmpty(SearchFilter))
             {
                 filteredFriends = filteredFriends.Where(f =>
@@ -104,7 +104,7 @@ namespace AppRazor.Pages
             var resp = await _service.ReadFriendsAsync(UseSeeds, false, null, 0, 10000);
             var allFriends = resp.PageItems;
 
-            // Populate the country list
+
             Countries = allFriends
                 .Where(f => !string.IsNullOrEmpty(f.Address?.Country))
                 .Select(f => f.Address.Country)
@@ -112,7 +112,7 @@ namespace AppRazor.Pages
                 .OrderBy(c => c)
                 .ToList();
 
-            // Filter by country if selected
+
             List<IFriend> filteredFriends = allFriends;
 
             if (!string.IsNullOrEmpty(CountryFilter))
@@ -120,7 +120,7 @@ namespace AppRazor.Pages
                 filteredFriends = filteredFriends.Where(f => f.Address?.Country == CountryFilter).ToList();
             }
 
-            // Filter by city if search filter is provided
+            // Filter by city
             if (!string.IsNullOrEmpty(SearchFilter))
             {
                 filteredFriends = filteredFriends.Where(f =>

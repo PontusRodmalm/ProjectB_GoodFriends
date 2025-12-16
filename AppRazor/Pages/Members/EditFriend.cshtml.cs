@@ -86,9 +86,6 @@ namespace AppRazor.Pages
             [Required(ErrorMessage = "You must provide a last name")]
             public string LastName { get; set; } = string.Empty;
 
-            [Required(ErrorMessage = "You must provide an email")]
-            public string Email { get; set; } = string.Empty;
-
             public AddressIM Address { get; set; } = new AddressIM();
 
             public FriendIM() { }
@@ -99,7 +96,6 @@ namespace AppRazor.Pages
                 FriendId = model.FriendId;
                 FirstName = model.FirstName ?? string.Empty;
                 LastName = model.LastName ?? string.Empty;
-                Email = model.Email ?? string.Empty;
                 Address = new AddressIM(model.Address);
             }
 
@@ -108,8 +104,7 @@ namespace AppRazor.Pages
                 FriendId = this.FriendId,
                 FirstName = this.FirstName,
                 LastName = this.LastName,
-                Email = this.Email,
-                AddressId = null // Set this if you have AddressId, or handle Address separately
+                AddressId = null
             };
         }
 
