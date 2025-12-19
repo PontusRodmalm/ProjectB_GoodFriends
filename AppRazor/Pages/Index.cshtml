@@ -4,7 +4,29 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div class="container px-4 py-4" id="home">
+    <div class="bg-body-tertiary p-5 rounded">
+        <div class="col-sm-8 py-5 mx-auto">
+            <h1 class="graffiti-title">GoodFriends</h1>
+            <p class="fs-5">
+                This example is part of the ASP.NET Web Development course, and shows how to combine ASP.NET Razorpages
+                and MVC.
+                Pages are rendered in ASP.NET backend using C# and Razor syntax. Frontend is using css, javascript,
+                Bootstrap and JQuery.
+                Backend architecture is MVC and MVVM.
+            </p>
+            <p>
+                We use loosely coupled software layers so we use communicate with a SQL Database either through
+                EntityFramework Core integrated in the application or via a WebApi.
+                All without any code changes in the Application except in the Dependency Injection where we simply
+                inject different services.
+            </p>
+            <p>
+                <a class="btn btn-primary" href="https://webapi-public-72962524.azurewebsites.net/swagger"
+                    role="button">External public webapi datasource</a>
+            </p>
+            <p>Enjoy!</p>
+        </div>
+    </div>
 </div>

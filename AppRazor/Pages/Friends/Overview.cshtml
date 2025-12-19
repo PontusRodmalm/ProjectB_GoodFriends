@@ -55,9 +55,7 @@
                     <div class="col-md-4 themed-grid-head-col">Friend Name</div>
                     <div class="col-md-2 themed-grid-head-col">City</div>
                     <div class="col-md-3 themed-grid-head-col">Pets</div>
-                    <div class="col-md-3 themed-grid-head-col">
-                        <a href="~/Members/EditFriend" class="btn btn-success btn-sm m-1" type="button">New</a>
-                    </div>
+                    <div class="col-md-3 themed-grid-head-col">Actions</div>
                 </div>
 
                 <div class="row mb-2 text-center">
@@ -93,8 +91,6 @@
                                 }
                             </div>
                             <div class="col-md-3 themed-grid-col">
-                                <a href="~/Friends/ViewFriend?id=@item.FriendId" class="btn btn-primary btn-sm m-1"
-                                    type="button">View</a>
                                 <a href="~/Members/EditFriend?id=@item.FriendId" class="btn btn-secondary btn-sm m-1"
                                     type="button">Edit</a>
 
@@ -146,7 +142,7 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    Hello from modal
+                                    Do you want to delete <strong data-seido-modal-body-target></strong>?
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"

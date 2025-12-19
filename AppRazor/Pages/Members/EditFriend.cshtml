@@ -48,50 +48,42 @@
                     <input asp-for="FriendInput.StatusIM" type="hidden" />
 
                     <div class="col-sm-6">
-                        <label asp-for="FriendInput.FirstName" class="form-label"></label>
+                        <label asp-for="FriendInput.FirstName" class="form-label">Firstname</label>
                         <input asp-for="FriendInput.FirstName" class="form-control" />
                         <span asp-validation-for="FriendInput.FirstName" class="invalid-feedback"></span>
                     </div>
                     <div class="col-sm-6">
-                        <label asp-for="FriendInput.LastName" class="form-label"></label>
+                        <label asp-for="FriendInput.LastName" class="form-label">Lastname</label>
                         <input asp-for="FriendInput.LastName" class="form-control" />
                         <span asp-validation-for="FriendInput.LastName" class="invalid-feedback"></span>
                     </div>
+                    <div class="col-sm-6">
+                        <label asp-for="FriendInput.Birthday" class="form-label">Birthday</label>
+                        <input asp-for="FriendInput.Birthday" class="form-control" type="date" />
+                        <span asp-validation-for="FriendInput.Birthday" class="invalid-feedback"></span>
+                    </div>
                 </div>
 
-                <div class="accordion mt-4" id="addressAccordion">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingAddress">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseAddress" aria-expanded="false" aria-controls="collapseAddress">
-                                Address
-                            </button>
-                        </h2>
-                        <div id="collapseAddress" class="accordion-collapse collapse" aria-labelledby="headingAddress"
-                            data-bs-parent="#addressAccordion">
-                            <div class="accordion-body">
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <label asp-for="FriendInput.Address.StreetAddress" class="form-label"></label>
-                                        <input asp-for="FriendInput.Address.StreetAddress" class="form-control" />
-                                        <span asp-validation-for="FriendInput.Address.StreetAddress"
-                                            class="invalid-feedback"></span>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label asp-for="FriendInput.Address.ZipCode" class="form-label"></label>
-                                        <input asp-for="FriendInput.Address.ZipCode" class="form-control" />
-                                        <span asp-validation-for="FriendInput.Address.ZipCode"
-                                            class="invalid-feedback"></span>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label asp-for="FriendInput.Address.City" class="form-label"></label>
-                                        <input asp-for="FriendInput.Address.City" class="form-control" />
-                                        <span asp-validation-for="FriendInput.Address.City"
-                                            class="invalid-feedback"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="row g-3 mt-4">
+                    <div class="col-sm-6">
+                        <label asp-for="FriendInput.Address.StreetAddress" class="form-label">Street Address</label>
+                        <input asp-for="FriendInput.Address.StreetAddress" class="form-control" />
+                        <span asp-validation-for="FriendInput.Address.StreetAddress" class="invalid-feedback"></span>
+                    </div>
+                    <div class="col-sm-3">
+                        <label asp-for="FriendInput.Address.ZipCode" class="form-label">Zip Code</label>
+                        <input asp-for="FriendInput.Address.ZipCode" class="form-control" />
+                        <span asp-validation-for="FriendInput.Address.ZipCode" class="invalid-feedback"></span>
+                    </div>
+                    <div class="col-sm-3">
+                        <label asp-for="FriendInput.Address.City" class="form-label">City</label>
+                        <input asp-for="FriendInput.Address.City" class="form-control" />
+                        <span asp-validation-for="FriendInput.Address.City" class="invalid-feedback"></span>
+                    </div>
+                    <div class="col-sm-3">
+                        <label asp-for="FriendInput.Address.Country" class="form-label">Country</label>
+                        <input asp-for="FriendInput.Address.Country" class="form-control" />
+                        <span asp-validation-for="FriendInput.Address.Country" class="invalid-feedback"></span>
                     </div>
                 </div>
 

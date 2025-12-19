@@ -6,6 +6,8 @@ using Services.Interfaces;
 using Models.DTO;
 using Models.Interfaces;
 using WebAppStudies.SeidoHelpers;
+using System.Runtime.CompilerServices;
+using Models;
 
 
 namespace AppRazor.Pages
@@ -14,6 +16,7 @@ namespace AppRazor.Pages
     {
         private readonly IFriendsService _service;
         private readonly ILogger<EditFriendModel> _logger;
+        private readonly IAddressesService _addressesService;
 
         [BindProperty]
         public FriendIM? FriendInput { get; set; }
@@ -23,10 +26,11 @@ namespace AppRazor.Pages
 
         public ModelValidationResult ValidationResult { get; set; } = new ModelValidationResult(false, Enumerable.Empty<string>(), Enumerable.Empty<KeyValuePair<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>>());
 
-        public EditFriendModel(IFriendsService service, ILogger<EditFriendModel> logger)
+        public EditFriendModel(IFriendsService service, ILogger<EditFriendModel> logger, IAddressesService addressesService)
         {
             _service = service;
             _logger = logger;
+            _addressesService = addressesService;
         }
 
         public async Task<IActionResult> OnGet()
@@ -42,16 +46,16 @@ namespace AppRazor.Pages
             }
             else
             {
-                FriendInput = new FriendIM();
-                FriendInput.StatusIM = StatusIM.Inserted;
-                PageHeader = "Create New Friend";
+                // No id provided, redirect to overview
+                return RedirectToPage("/Friends/Overview");
             }
             return Page();
         }
 
+
         public async Task<IActionResult> OnPostSave()
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || FriendInput == null || FriendInput.Address == null)
             {
                 ValidationResult = new ModelValidationResult(
                     true,
@@ -61,21 +65,33 @@ namespace AppRazor.Pages
                 return Page();
             }
 
-            if (FriendInput.StatusIM == StatusIM.Inserted)
+            // Save or update address first
+            var addressDto = FriendInput.Address.ToCUdto();
+            ResponseItemDto<IAddress> addressResp;
+            if (string.IsNullOrEmpty(FriendInput.Address.AddressId) || FriendInput.Address.AddressId == Guid.Empty.ToString())
             {
-                await _service.CreateFriendAsync(FriendInput.ToCUdto());
+                addressResp = await _addressesService.CreateAddressAsync(addressDto);
             }
             else
             {
-                await _service.UpdateFriendAsync(FriendInput.ToCUdto());
+                addressDto.AddressId = Guid.Parse(FriendInput.Address.AddressId);
+                addressResp = await _addressesService.UpdateAddressAsync(addressDto);
             }
 
-            return RedirectToPage("/Members/ListOfFriends");
+            // Set AddressId on FriendCuDto
+            var friendDto = FriendInput.ToCUdto();
+            friendDto.AddressId = addressResp.Item?.AddressId ?? Guid.Empty;
+
+            // Only update existing friends
+            await _service.UpdateFriendAsync(friendDto);
+
+            return RedirectToPage("/Friends/Overview");
         }
 
         public enum StatusIM { Unknown, Unchanged, Inserted, Modified, Deleted }
 
         public class FriendIM
+
         {
             public StatusIM StatusIM { get; set; }
             public Guid FriendId { get; set; }
@@ -88,6 +104,9 @@ namespace AppRazor.Pages
 
             public AddressIM Address { get; set; } = new AddressIM();
 
+            [DataType(DataType.Date)]
+            public DateTime? Birthday { get; set; } = null;
+
             public FriendIM() { }
 
             public FriendIM(IFriend model)
@@ -97,6 +116,7 @@ namespace AppRazor.Pages
                 FirstName = model.FirstName ?? string.Empty;
                 LastName = model.LastName ?? string.Empty;
                 Address = new AddressIM(model.Address);
+                Birthday = model.Birthday;
             }
 
             public FriendCuDto ToCUdto() => new FriendCuDto
@@ -104,20 +124,26 @@ namespace AppRazor.Pages
                 FriendId = this.FriendId,
                 FirstName = this.FirstName,
                 LastName = this.LastName,
+                Birthday = this.Birthday,
                 AddressId = null
             };
         }
 
         public class AddressIM
         {
+            public string AddressId { get; set; } = string.Empty;
+
             [Required(ErrorMessage = "Street is required")]
-            public string StreetAddress { get; set; }
+            public string StreetAddress { get; set; } = string.Empty;
 
             [Required(ErrorMessage = "City is required")]
-            public string City { get; set; }
+            public string City { get; set; } = string.Empty;
 
             [Required(ErrorMessage = "Zip code is required")]
-            public string ZipCode { get; set; }
+            public string ZipCode { get; set; } = string.Empty;
+
+            [Required(ErrorMessage = "Country is required")]
+            public string Country { get; set; } = string.Empty;
 
             public AddressIM() { }
             public AddressIM(IAddress model)
@@ -127,18 +153,22 @@ namespace AppRazor.Pages
                     StreetAddress = string.Empty;
                     City = string.Empty;
                     ZipCode = string.Empty;
+                    Country = string.Empty;
                     return;
                 }
+                AddressId = model.AddressId.ToString();
                 StreetAddress = model.StreetAddress;
                 City = model.City;
                 ZipCode = model.ZipCode.ToString();
+                Country = model.Country ?? string.Empty;
             }
 
             public AddressCuDto ToCUdto() => new AddressCuDto
             {
                 StreetAddress = this.StreetAddress,
                 City = this.City,
-                ZipCode = int.TryParse(this.ZipCode, out int zip) ? zip : 0
+                ZipCode = int.TryParse(this.ZipCode, out int zip) ? zip : 0,
+                Country = this.Country
             };
         }
     }
