@@ -27,11 +27,11 @@ function launchModal (event)  {
 
 
   //Add launchHandler to all you modals
-  /*
+  
   document.getElementById('softModal').addEventListener('show.bs.modal', launchModal);
   document.getElementById('hardModal').addEventListener('show.bs.modal', launchModal);
   document.getElementById('dangerModal').addEventListener('show.bs.modal', launchModal);
-*/
+
 
 let melems = document.querySelectorAll('.modal.fade');
 melems.forEach(elem => {

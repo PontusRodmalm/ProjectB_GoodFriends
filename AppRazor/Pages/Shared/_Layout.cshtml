@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="author" content="Pontus Rodmalm">
 
-    <title>@ViewData["Title"] - AppRazor</title>
+    <title>@ViewData["Title"] - Friends Hub</title>
 
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -25,6 +25,7 @@
     <link href="~/css/bootstrap/grid.css" rel="stylesheet">
     <link href="~/css/bootstrap/sign-in.css" rel="stylesheet">
     <link href="~/css/bootstrap/modals.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -51,26 +52,30 @@
         </symbol>
     </svg>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">AppRazor</a>
+        <nav class="navbar navbar-expand-sm navbar-light comic-navbar">
+            <div class="container-fluid">
+                <a class="navbar-brand comic-brand" asp-area="" asp-page="/Index">
+                    FRIENDS HUB
+                </a>
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
+                    <ul class="navbar-nav flex-grow-1 justify-content-end comic-nav-items">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link comic-link" asp-area="" asp-page="/Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Friends/Overview">Friends Overview</a>
+                            <a class="nav-link comic-link" asp-area="" asp-page="/Friends/Overview">Friends Overview</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Members/Seed">Seed</a>
+                            <a class="nav-link comic-link" asp-area="" asp-page="/Members/Seed">Seed</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link comic-link" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
                     </ul>
                 </div>
@@ -83,15 +88,37 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="comic-footer section-yellow">
         <div class="container">
-            &copy; 2025 - AppRazor - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h3 class="comic-footer-heading">FRIENDS HUB</h3>
+                    <p>A creation by Pontus Rodmalm</p>
+                </div>
+
+                <div class="col-md-4">
+                    <h3 class="comic-footer-heading">CONTACT ME!</h3>
+                    <div class="comic-social-icons">
+                        <a href="#" class="social-bubble li">Linkedin</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12 text-center copyright-text">
+                    <p>&copy; 2025 Friends Hub. All Rights Reserved. POW!</p>
+                </div>
+            </div>
         </div>
     </footer>
+
+    <!-- .NET unobstrusive validation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/script/seido/modals.js" asp-append-verison="true"></script>
+    <script src="~/script/seido/select-list-items.js" asp-append-verison="true"></script>
 
     @await RenderSectionAsync("script", required: false)
 </body>

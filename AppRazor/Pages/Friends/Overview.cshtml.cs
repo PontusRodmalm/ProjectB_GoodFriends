@@ -73,6 +73,8 @@ namespace AppRazor.Pages
             if (!string.IsNullOrEmpty(SearchFilter))
             {
                 filteredFriends = filteredFriends.Where(f =>
+                    f.FirstName?.Contains(SearchFilter, StringComparison.OrdinalIgnoreCase) == true ||
+                    f.LastName?.Contains(SearchFilter, StringComparison.OrdinalIgnoreCase) == true ||
                     f.Address?.City?.Contains(SearchFilter, StringComparison.OrdinalIgnoreCase) == true).ToList();
             }
 
@@ -120,10 +122,11 @@ namespace AppRazor.Pages
                 filteredFriends = filteredFriends.Where(f => f.Address?.Country == CountryFilter).ToList();
             }
 
-            // Filter by city
             if (!string.IsNullOrEmpty(SearchFilter))
             {
                 filteredFriends = filteredFriends.Where(f =>
+                    f.FirstName?.Contains(SearchFilter, StringComparison.OrdinalIgnoreCase) == true ||
+                    f.LastName?.Contains(SearchFilter, StringComparison.OrdinalIgnoreCase) == true ||
                     f.Address?.City?.Contains(SearchFilter, StringComparison.OrdinalIgnoreCase) == true).ToList();
             }
 

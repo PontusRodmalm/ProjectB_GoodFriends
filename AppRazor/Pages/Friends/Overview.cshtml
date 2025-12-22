@@ -7,154 +7,156 @@
 @attribute [IgnoreAntiforgeryToken]
 <!-- Page List of friends -->
 <div class="container px-4 py-4" id="list-of-friends">
-    <h2 class="pb-2 border-bottom">List of Friends</h2>
+    <div class="glass-card p-4">
+        <h2 class="pb-2 border-bottom">List of Friends</h2>
 
-    <p>Below are some of the world's most famous friends.</p>
-    <p>The database contains @Model.NrOfFriends friends with the search criteria</p>
+        <p>Below are some of the friends.</p>
+        <p>The database contains @Model.NrOfFriends friends with the search criteria</p>
 
-    <form method="post" class="needs-validation" novalidate>
-        <label class="form-check-label" for="useSeeds">Use seeded data</label>
-        <input asp-for="UseSeeds" class="form-check-input" type="checkbox" id="useSeeds">
-        <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-5">
-            <div class="col-md-7 col-lg-10">
-                <div class="row mb-2 text-center">
-                    <!-- Search filter-->
-                    <div class="row mb-2 text-center align-items-center">
-                        <div class="col-md-4">
-                            <input asp-for="SearchFilter" class="form-control" type="search" placeholder="Search"
-                                aria-label="Search">
-                        </div>
-                        <div class="col-md-2">
-                            <button asp-page-handler="Search" class="btn btn-outline-success"
-                                type="submit">Search</button>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle w-100" type="button"
-                                    id="countryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    @(string.IsNullOrEmpty(Model.CountryFilter) ? "Filter by Country" :
-                                                                        Model.CountryFilter)
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="countryDropdown">
-                                    <li><a class="dropdown-item" href="~/Friends/Overview?CountryFilter=">All
-                                            Countries</a></li>
-                                    @foreach (var country in Model.Countries)
-                                    {
-                                        <li><a class="dropdown-item"
-                                                href="~/Friends/Overview?CountryFilter=@country">@country</a></li>
-                                    }
-                                </ul>
+        <form method="post" class="needs-validation" novalidate>
+            <label class="form-check-label" for="useSeeds">Use seeded data</label>
+            <input asp-for="UseSeeds" class="form-check-input" type="checkbox" id="useSeeds">
+            <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-5">
+                <div class="col-md-7 col-lg-10">
+                    <div class="row mb-2 text-center">
+                        <!-- Search filter-->
+                        <div class="row mb-2 text-center align-items-center">
+                            <div class="col-md-4">
+                                <input asp-for="SearchFilter" class="form-control" type="search" placeholder="Search"
+                                    aria-label="Search">
+                            </div>
+                            <div class="col-md-2">
+                                <button asp-page-handler="Search" class="btn btn-outline-success"
+                                    type="submit">Search</button>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle w-100" type="button"
+                                        id="countryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        @(string.IsNullOrEmpty(Model.CountryFilter) ? "Filter by Country" :
+                                                                                Model.CountryFilter)
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="countryDropdown">
+                                        <li><a class="dropdown-item" href="~/Friends/Overview?CountryFilter=">All
+                                                Countries</a></li>
+                                        @foreach (var country in Model.Countries)
+                                        {
+                                            <li><a class="dropdown-item"
+                                                    href="~/Friends/Overview?CountryFilter=@country">@country</a></li>
+                                        }
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row mb-2 text-center">
-                    <!-- This is where selected item id will be stored -->
-                    <input type="hidden" name="friendId" data-seido-selected-item-id-target />
+                    <div class="row mb-2 text-center">
+                        <!-- This is where selected item id will be stored -->
+                        <input type="hidden" name="friendId" data-seido-selected-item-id-target />
 
-                    <div class="col-md-4 themed-grid-head-col">Friend Name</div>
-                    <div class="col-md-2 themed-grid-head-col">City</div>
-                    <div class="col-md-3 themed-grid-head-col">Pets</div>
-                    <div class="col-md-3 themed-grid-head-col">Actions</div>
-                </div>
+                        <div class="col-md-4 themed-grid-head-col">Friend Name</div>
+                        <div class="col-md-2 themed-grid-head-col">City</div>
+                        <div class="col-md-3 themed-grid-head-col">Pets</div>
+                        <div class="col-md-3 themed-grid-head-col">Actions</div>
+                    </div>
 
-                <div class="row mb-2 text-center">
-                    @if (Model.Friends is not null)
-                    {
-                        @foreach (var item in Model.Friends)
+                    <div class="row mb-2 text-center">
+                        @if (Model.Friends is not null)
                         {
-                            <div class="col-md-4 themed-grid-col">
-                                <a href="~/Friends/ViewFriend?id=@item.FriendId">
-                                    @item.FirstName @item.LastName
-                                </a>
-                            </div>
-                            <div class="col-md-2 themed-grid-col">
-                                @if (!string.IsNullOrEmpty(item.Address?.City))
-                                {
-                                    <a href="~/Friends/Overview?search=@item.Address.City&CountryFilter=@Model.CountryFilter">
-                                        @item.Address.City
+                            @foreach (var item in Model.Friends)
+                            {
+                                <div class="col-md-4 themed-grid-col">
+                                    <a href="~/Friends/ViewFriend?id=@item.FriendId">
+                                        @item.FirstName @item.LastName
                                     </a>
-                                }
-                                else
-                                {
-                                    <span>N/A</span>
-                                }
-                            </div>
-                            <div class="col-md-3 themed-grid-col">
-                                @if (item.Pets != null && item.Pets.Any())
-                                {
-                                    <span>@item.Pets.Count</span>
-                                }
-                                else
-                                {
-                                    <span>0</span>
-                                }
-                            </div>
-                            <div class="col-md-3 themed-grid-col">
-                                <a href="~/Members/EditFriend?id=@item.FriendId" class="btn btn-secondary btn-sm m-1"
-                                    type="button">Edit</a>
+                                </div>
+                                <div class="col-md-2 themed-grid-col">
+                                    @if (!string.IsNullOrEmpty(item.Address?.City))
+                                    {
+                                        <a href="~/Friends/Overview?search=@item.Address.City&CountryFilter=@Model.CountryFilter">
+                                            @item.Address.City
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span>N/A</span>
+                                    }
+                                </div>
+                                <div class="col-md-3 themed-grid-col">
+                                    @if (item.Pets != null && item.Pets.Any())
+                                    {
+                                        <span>@item.Pets.Count</span>
+                                    }
+                                    else
+                                    {
+                                        <span>0</span>
+                                    }
+                                </div>
+                                <div class="col-md-3 themed-grid-col">
+                                    <a href="~/Members/EditFriend?id=@item.FriendId" class="btn btn-secondary btn-sm m-1"
+                                        type="button">Edit</a>
 
-                                <!-- Button to trigger modal confirmation with modal in the form tag -->
-                                <button type="button" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal"
-                                    data-bs-target="#delModal"
-                                    data-seido-modal-body="@item.FirstName @item.LastName is about to be deleted."
-                                    data-seido-selected-item-id="@item.FriendId">
-                                    Del
-                                </button>
-                            </div>
-                        }
-                        <nav aria-label="Standard pagination example">
-                            <ul class="pagination">
-                                <li class="page-item">
-                                    <a class="page-link"
-                                        href="~/Friends/Overview?pagenr=@Model.PrevPageNr&search=@Model.SearchFilter&CountryFilter=@Model.CountryFilter"
-                                        aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                @for (int i = 0; i < Model.NrVisiblePages; i++)
-                                {
+                                    <!-- Button to trigger modal confirmation with modal in the form tag -->
+                                    <button type="button" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal"
+                                        data-bs-target="#delModal"
+                                        data-seido-modal-body="@item.FirstName @item.LastName is about to be deleted."
+                                        data-seido-selected-item-id="@item.FriendId">
+                                        Del
+                                    </button>
+                                </div>
+                            }
+                            <nav aria-label="Standard pagination example">
+                                <ul class="pagination">
                                     <li class="page-item">
                                         <a class="page-link"
-                                            href="~/Friends/Overview?pagenr=@i&search=@Model.SearchFilter&CountryFilter=@Model.CountryFilter">@(i
-                                                                                + 1)</a>
+                                            href="~/Friends/Overview?pagenr=@Model.PrevPageNr&search=@Model.SearchFilter&CountryFilter=@Model.CountryFilter"
+                                            aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    @for (int i = 0; i < Model.NrVisiblePages; i++)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                                href="~/Friends/Overview?pagenr=@i&search=@Model.SearchFilter&CountryFilter=@Model.CountryFilter">@(i
+                                                                                        + 1)</a>
+                                    </li>
+                                }
+                                <li class="page-item">
+                                    <a class="page-link"
+                                        href="~/Friends/Overview?pagenr=@Model.NextPageNr&search=@Model.SearchFilter&CountryFilter=@Model.CountryFilter"
+                                        aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
                                 </li>
-                            }
-                            <li class="page-item">
-                                <a class="page-link"
-                                    href="~/Friends/Overview?pagenr=@Model.NextPageNr&search=@Model.SearchFilter&CountryFilter=@Model.CountryFilter"
-                                    aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                                        }
+                            </ul>
+                        </nav>
+                                                }
 
-                    <!-- Modal in the form tag -->
-                    <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="softModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title text-danger" id="softModalLabel">Confirm deletion</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Do you want to delete <strong data-seido-modal-body-target></strong>?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" asp-page-handler="DeleteFriend"
-                                        class="btn btn-primary btn-danger">Ok</button>
+                        <!-- Modal in the form tag -->
+                        <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="softModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-danger" id="softModalLabel">Confirm deletion</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Do you want to delete <strong data-seido-modal-body-target></strong>?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" asp-page-handler="DeleteFriend"
+                                            class="btn btn-primary btn-danger">Ok</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
