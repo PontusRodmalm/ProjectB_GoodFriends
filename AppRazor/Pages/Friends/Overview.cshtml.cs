@@ -27,20 +27,16 @@ namespace AppRazor.Pages
         //Pagination
         public int NrOfPages { get; set; }
         public int PageSize { get; } = 10;
-
         public int ThisPageNr { get; set; } = 0;
         public int PrevPageNr { get; set; } = 0;
         public int NextPageNr { get; set; } = 0;
         public int NrVisiblePages { get; set; } = 0;
 
-        //ModelBinding for the form
         [BindProperty]
         public string? SearchFilter { get; set; }
 
-        //will execute on a Get request
         public async Task<IActionResult> OnGet()
         {
-            //Read a QueryParameters
             if (int.TryParse(Request.Query["pagenr"], out int pagenr))
             {
                 ThisPageNr = pagenr;
@@ -49,7 +45,6 @@ namespace AppRazor.Pages
             SearchFilter = Request.Query["search"];
             CountryFilter = Request.Query["CountryFilter"];
 
-            //Use the Service 
             var resp = await _service.ReadFriendsAsync(UseSeeds, false, null, 0, 10000);
             var allFriends = resp.PageItems;
 
@@ -61,7 +56,6 @@ namespace AppRazor.Pages
                 .OrderBy(c => c)
                 .ToList();
 
-            // Filter by country if selected
             List<IFriend> filteredFriends = allFriends;
 
             if (!string.IsNullOrEmpty(CountryFilter))
@@ -80,7 +74,6 @@ namespace AppRazor.Pages
 
             NrOfFriends = filteredFriends.Count;
 
-            //Pagination 
             Friends = filteredFriends
                 .Skip(ThisPageNr * PageSize)
                 .Take(PageSize)
@@ -93,7 +86,6 @@ namespace AppRazor.Pages
 
         private void UpdatePagination(int nrOfItems)
         {
-            //Pagination
             NrOfPages = (int)Math.Ceiling((double)nrOfItems / PageSize);
             PrevPageNr = Math.Max(0, ThisPageNr - 1);
             NextPageNr = Math.Min(NrOfPages - 1, ThisPageNr + 1);
@@ -102,7 +94,6 @@ namespace AppRazor.Pages
 
         public async Task<IActionResult> OnPostSearch()
         {
-            //Use the Service - get all friends
             var resp = await _service.ReadFriendsAsync(UseSeeds, false, null, 0, 10000);
             var allFriends = resp.PageItems;
 
@@ -132,7 +123,6 @@ namespace AppRazor.Pages
 
             NrOfFriends = filteredFriends.Count;
 
-            //Pagination
             Friends = filteredFriends
                 .Skip(ThisPageNr * PageSize)
                 .Take(PageSize)
@@ -140,7 +130,6 @@ namespace AppRazor.Pages
 
             UpdatePagination(NrOfFriends);
 
-            //Page is rendered as the postback is part of the form tag
             return Page();
         }
 
@@ -148,18 +137,15 @@ namespace AppRazor.Pages
         {
             await _service.DeleteFriendAsync(friendId);
 
-            //Use the Service
             var resp = await _service.ReadFriendsAsync(UseSeeds, false, SearchFilter, ThisPageNr, PageSize);
             Friends = resp.PageItems;
             NrOfFriends = resp.DbItemsCount;
 
-            //Pagination
             UpdatePagination(resp.DbItemsCount);
 
             return Page();
         }
 
-        //Inject services just like in WebApi
         public ListOfFriendsModel(IFriendsService service, ILogger<ListOfFriendsModel> logger)
         {
             _service = service;
