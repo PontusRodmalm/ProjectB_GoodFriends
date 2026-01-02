@@ -191,91 +191,88 @@
                             <input asp-for="FriendInput.Quotes[k].Author" value="@Model.FriendInput.Quotes[k].Author"
                                 class="form-control" type="hidden" />
 
-                            <div class="col-md-6 themed-grid-col">@Model.FriendInput.Quotes[k].QuoteText</div>
-                            <div class="col-md-4 themed-grid-col">@Model.FriendInput.Quotes[k].Author</div>
-                            <div class="col-md-2 themed-grid-col">
-                                <button class="btn btn-secondary btn-sm m-1" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseEditQuote_@Model.FriendInput.Quotes[k].QuoteId"
-                                    data-seido-selected-item-id="@Model.FriendInput.Quotes[k].QuoteId">
-                                    Edit
-                                </button>
+                        <div class="col-md-6 themed-grid-col">@Model.FriendInput.Quotes[k].QuoteText</div>
+                        <div class="col-md-4 themed-grid-col">@Model.FriendInput.Quotes[k].Author</div>
+                        <div class="col-md-2 themed-grid-col">
+                            <button class="btn btn-secondary btn-sm m-1" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseEditQuote_@Model.FriendInput.Quotes[k].QuoteId"
+                                data-seido-selected-item-id="@Model.FriendInput.Quotes[k].QuoteId">
+                                Edit
+                            </button>
 
-                                <button type="button" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal"
-                                    data-bs-target="#delQuoteModal"
-                                    data-seido-modal-body="Quote by @Model.FriendInput.Quotes[k].Author is about to be deleted."
-                                    data-seido-selected-item-id="@Model.FriendInput.Quotes[k].QuoteId">
-                                    Del
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="collapse row mb-2 text-center"
-                            id="collapseEditQuote_@Model.FriendInput.Quotes[k].QuoteId">
-                            <div class="col-md-6 themed-grid-col">
-                                <input asp-for="FriendInput.Quotes[k].editQuoteText" class="form-control"
-                                    value="@Model.FriendInput.Quotes[k].editQuoteText" />
-                                <span asp-validation-for="FriendInput.Quotes[k].editQuoteText"
-                                    class="invalid-feedback"></span>
-                            </div>
-                            <div class="col-md-4 themed-grid-col">
-                                <input asp-for="FriendInput.Quotes[k].editAuthor" class="form-control"
-                                    value="@Model.FriendInput.Quotes[k].editAuthor" />
-                                <span asp-validation-for="FriendInput.Quotes[k].editAuthor" class="invalid-feedback"></span>
-                            </div>
-                            <div class="col-md-2 themed-grid-col">
-                                <button type="submit" asp-page-handler="EditQuote" class="btn btn-success btn-sm m-1">
-                                    Ok
-                                </button>
-                            </div>
-                        </div>
-                    }
-                </div>
-
-                <div class="modal fade" id="delPetModal" tabindex="-1" aria-labelledby="delPetModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title text-danger" id="delPetModalLabel">Confirm pet deletion</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Do you want to delete <strong data-seido-modal-body-target></strong>?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" asp-page-handler="DeletePet" data-seido-selected-item-id-target
-                                    class="btn btn-primary btn-danger">Ok</button>
-                            </div>
+                            <!-- Button trigger post DeleteQuote -->
+                            <button type="button" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal"
+                                data-bs-target="#delQuoteModal"
+                                data-seido-modal-body="Quote by @Model.FriendInput.Quotes[k].Author is about to be deleted."
+                                data-seido-selected-item-id="@Model.FriendInput.Quotes[k].QuoteId">
+                                Del
+                            </button>
                         </div>
                     </div>
-                </div>
 
-                <div class="modal fade" id="delQuoteModal" tabindex="-1" aria-labelledby="delQuoteModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title text-danger" id="delQuoteModalLabel">Confirm quote deletion</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Do you want to delete <strong data-seido-modal-body-target></strong>?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" asp-page-handler="DeleteQuote" data-seido-selected-item-id-target
-                                    class="btn btn-primary btn-danger">Ok</button>
-                            </div>
+                    <div class="collapse row mb-2 text-center" id="collapseEditQuote_@Model.FriendInput.Quotes[k].QuoteId">
+                        <div class="col-md-6 themed-grid-col">
+                            <input asp-for="FriendInput.Quotes[k].editQuoteText" class="form-control"
+                                value="@Model.FriendInput.Quotes[k].editQuoteText" />
+                            <span asp-validation-for="FriendInput.Quotes[k].editQuoteText" class="invalid-feedback"></span>
+                        </div>
+                        <div class="col-md-4 themed-grid-col">
+                            <input asp-for="FriendInput.Quotes[k].editAuthor" class="form-control"
+                                value="@Model.FriendInput.Quotes[k].editAuthor" />
+                            <span asp-validation-for="FriendInput.Quotes[k].editAuthor" class="invalid-feedback"></span>
+                        </div>
+                        <div class="col-md-2 themed-grid-col">
+                            <button type="submit" asp-page-handler="EditQuote" class="btn btn-success btn-sm m-1">
+                                Ok
+                            </button>
                         </div>
                     </div>
-                </div>
-
+                }
             </div>
+
+            <div class="modal fade" id="delPetModal" tabindex="-1" aria-labelledby="delPetModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-danger" id="delPetModalLabel">Confirm pet deletion</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Do you want to delete <strong data-seido-modal-body-target></strong>?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" asp-page-handler="DeletePet" data-seido-selected-item-id-target
+                                class="btn btn-primary btn-danger" formnovalidate>Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="delQuoteModal" tabindex="-1" aria-labelledby="delQuoteModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-danger" id="delQuoteModalLabel">Confirm quote deletion</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Do you want to delete <strong data-seido-modal-body-target></strong>?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" asp-page-handler="DeleteQuote" data-seido-selected-item-id-target
+                                class="btn btn-primary btn-danger" formnovalidate>Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </form>
+</div>
+</form>
 </div>
 
 @section script

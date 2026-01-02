@@ -92,16 +92,8 @@
                                     }
                                 </div>
                                 <div class="col-md-3 themed-grid-col">
-                                    <a href="~/Members/EditFriend?id=@item.FriendId" class="btn btn-secondary btn-sm m-1"
-                                        type="button">Edit</a>
-
-                                    <!-- Button to trigger modal confirmation with modal in the form tag -->
-                                    <button type="button" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal"
-                                        data-bs-target="#delModal"
-                                        data-seido-modal-body="@item.FirstName @item.LastName is about to be deleted."
-                                        data-seido-selected-item-id="@item.FriendId">
-                                        Del
-                                    </button>
+                                    <a href="~/Friends/ViewFriend?id=@item.FriendId" class="btn btn-primary btn-sm m-1"
+                                        type="button">View</a>
                                 </div>
                             }
                             <nav aria-label="Standard pagination example">
@@ -131,29 +123,6 @@
                             </ul>
                         </nav>
                                                 }
-
-                        <!-- Modal in the form tag -->
-                        <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="softModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title text-danger" id="softModalLabel">Confirm deletion</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Do you want to delete <strong data-seido-modal-body-target></strong>?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Cancel</button>
-                                        <button type="submit" asp-page-handler="DeleteFriend"
-                                            class="btn btn-primary btn-danger">Ok</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
